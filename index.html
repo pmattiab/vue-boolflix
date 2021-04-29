@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolflix</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+</head>
+<body>
+
+    <!-- INIZIO VUE JS ROOT -->
+    <div id="root">
+
+        <!-- INIZIO HEADER -->
+        <header>
+
+            <!-- logo -->
+            <img src="img/boolflix_logo.png" alt="boolflix logo">
+
+            <!-- filtro ricerca film/serie -->
+            <div class="filters">
+
+                <!-- tasto per cercare -->
+                <button
+                    @click="searchTitle()">
+                    Cerca
+                </button>
+
+                <!-- input text per filtrare -->
+                <input
+                    type="text"
+                    v-model="userFilter"
+                    @keyup.enter="searchTitle()"
+                    placeholder="Inserisci titolo">
+            </div>
+
+        </header>
+        <!-- FINE HEADER -->
+
+        <!-- INIZIO MAIN -->
+        <main>
+
+            <div v-if="movies.length > 0" class="results_container">
+
+                <ul class="results_list">
+
+                    <li
+                        v-for="movie in movies"
+                        class="single_result">
+
+                        <ul class="result_details">
+
+                            <li>Titolo:<br><span class="gray_txt">{{movie.title}}</span></li>
+                            <li>Titolo originale:<br><span class="gray_txt">{{movie.original_title}}</span></li>
+                            <li>Lingua: <span class="gray_txt">{{movie.original_language}}</span></li>
+                            <li>Voto: <span class="gray_txt">{{movie.vote_average}}</span></li>
+
+                        </ul>
+                        
+                        
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div v-else class="no_results">
+                Cerca il titolo del film o della serie tv che vuoi guardare
+            </div>
+            
+        </main>
+        <!-- FINE MAIN -->
+
+    </div>
+    <!-- FINE VUE JS ROOT -->
+
+    <!-- INIZIO FOOTER -->
+    <footer>
+        <span><b>@pmattiab</b></span>
+        <img src="img/bool_logo.png" alt="boolean">
+        <span>boolflix with</span>
+        <img src="img/vue_logo.png" alt="vue">
+    </footer>
+    <!-- FINE FOOTER -->
+
+    <!-- JS -->
+    <script type="text/javascript" src="js/script.js"></script>   
+
+</body>
+</html>
