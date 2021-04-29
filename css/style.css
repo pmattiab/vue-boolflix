@@ -102,6 +102,11 @@ main {
     border: 1px solid red;
 }
 
+.single_result .lan_flag {
+    width: 23px;
+    height: 15px;
+}
+
 .result_details {
     height: 100%;
     text-align: center;
