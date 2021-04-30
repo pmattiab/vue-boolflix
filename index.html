@@ -76,44 +76,62 @@
 
                             <!-- titolo film o serie tv -->
                             <li>
-                                Titolo: 
+                                <span class="bold">Titolo: </span>
                                 <span v-if="movie.title" class="gray_txt">{{movie.title}}</span>
                                 <span v-else class="gray_txt">{{movie.name}}</span>
                             </li>
 
                             <!-- titolo originale film o serie tv -->
                             <li>
-                                Titolo originale: 
+                                <span class="bold">Titolo originale: </span>
                                 <span v-if="movie.original_title" class="gray_txt">{{movie.original_title}}</span>
                                 <span v-else class="gray_txt">{{movie.original_name}}</span>
                             </li>
 
                             <!-- lingua film o serie tv -->
                             <li>
-                                Lingua: 
+                                <span class="bold">Lingua: </span>
                                 <img
                                     v-if="movie.original_language"
                                     class="lan_flag"
                                     :src="'img/' + movie.original_language + '.png'"
                                     alt="movie.original_language">
-                                <span v-else>lingua non disponibile</span>
+                                <span v-else>non disponibile</span>
+                            </li>
+
+                            <!-- cast film o serie tv -->
+                            <li>
+                                <span class="bold">Cast: </span>
+                                <span class="gray_txt">esempio 1, esempio 2</span>
                             </li>
 
                             <!-- trama film o serie tv -->
                             <li>
-                                Trama: 
+                                <span class="bold">Trama: </span>
                                 <span v-if="movie.overview" class="gray_txt">{{movie.overview}}</span>
-                                <span v-else class="gray_txt">nessuna trama disponibile</span>
+                                <span v-else class="gray_txt">non disponibile</span>
+                            </li>
+
+                            <!-- generi film o serie tv -->
+                            <li>
+                                <span class="bold">Genere: </span>
+                                <span class="gray_txt">esempio 1, esempio 2</span>
                             </li>
                             
                             <!-- voto film o serie tv -->
                             <li>
-                                Voto:
-                                <span
-                                    v-for="star in movie.vote_average"
-                                    class="yellow_txt">
-                                    <i class="fas fa-star"></i>
+                                <span class="bold">Valutazione: </span>
+                                <span>
+                                    <i
+                                        v-for="star in movie.vote_average"
+                                        class="fas fa-star yellow_txt">
+                                    </i>
+                                    <i
+                                        v-for="star in (5 - movie.vote_average)"
+                                        class="fas fa-star gray_txt">
+                                    </i>
                                 </span>
+                                <span v-else class="gray_txt">non disponibile</span>
                             </li>
 
                         </ul>
@@ -127,11 +145,6 @@
 
             </div>
             <!-- fine contenitore risultati -->
-
-            <!-- stampa se l'utente non scrive niente nel filtro -->
-            <div v-if="userFilter.length == 0" class="no_results">
-                Cerca il titolo del film o della serie tv che vuoi guardare
-            </div>
             
         </main>
         <!-- FINE MAIN -->

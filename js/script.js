@@ -49,8 +49,15 @@ var app = new Vue(
                             // variabile result uguale al valore .data dell'oggetto "response" ottenuto
                             const result = response.data;
 
+                            // ciclo forEach su tutti i risultati (oggetti) per dividere in 2
+                            // il numero della valutazione ed arrotondarlo per eccesso
+                            // e per "tagliare" la trama fino a 200 caratteri ed aggiungere "..."
                             result.results.forEach(element => {
                                 element.vote_average = Math.ceil(element.vote_average / 2);
+                                element.overview = element.overview.slice(0, 200);
+                                if (element.overview.length > 199) {
+                                    element.overview += "...";
+                                }
                             });
 
                             // tramite filter() ritorno nel mio array movies solo gli oggetti
@@ -58,8 +65,6 @@ var app = new Vue(
                             this.movies = result.results.filter((element) => {
                                 return element.media_type == "movie" || element.media_type == "tv";
                             })
-
-
                         })
                 }
             }
