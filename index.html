@@ -48,15 +48,27 @@
         <main>
 
             <!-- inizio contenitore risultati -->
-            <!-- stampa solo se l'array dei risultati ha almeno 1 contenuto -->
-            <div v-if="movies.length > 0" class="results_container">
+            <div class="results_container">
 
                 <!-- inizio lista risultati -->
                 <!-- ogni risultato è una li -->
                 <ul class="results_list">
 
                     <!-- inizio li singolo risultato -->
-                    <li v-for="movie in movies" class="single_result">
+                    <li
+                        v-for="movie in movies"
+                        class="single_result">
+
+                        <!-- copertina film o serie tv -->
+                        <img
+                            v-if="movie.poster_path"
+                            class="poster"
+                            :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" alt="movie.name">
+                            
+                        <img
+                            v-else
+                            class="poster"
+                            src="img/no_poster.jpg" alt="no image">
 
                         <!-- inizio lista dettagli singolo risulatato -->
                         <!-- ogni dettagli sarà una li -->
@@ -64,14 +76,14 @@
 
                             <!-- titolo film o serie tv -->
                             <li>
-                                Titolo:<br>
+                                Titolo: 
                                 <span v-if="movie.title" class="gray_txt">{{movie.title}}</span>
                                 <span v-else class="gray_txt">{{movie.name}}</span>
                             </li>
 
                             <!-- titolo originale film o serie tv -->
                             <li>
-                                Titolo originale:<br>
+                                Titolo originale: 
                                 <span v-if="movie.original_title" class="gray_txt">{{movie.original_title}}</span>
                                 <span v-else class="gray_txt">{{movie.original_name}}</span>
                             </li>
@@ -79,15 +91,29 @@
                             <!-- lingua film o serie tv -->
                             <li>
                                 Lingua: 
-                                <img 
+                                <img
+                                    v-if="movie.original_language"
                                     class="lan_flag"
                                     :src="'img/' + movie.original_language + '.png'"
                                     alt="movie.original_language">
+                                <span v-else>lingua non disponibile</span>
+                            </li>
+
+                            <!-- trama film o serie tv -->
+                            <li>
+                                Trama: 
+                                <span v-if="movie.overview" class="gray_txt">{{movie.overview}}</span>
+                                <span v-else class="gray_txt">nessuna trama disponibile</span>
                             </li>
                             
                             <!-- voto film o serie tv -->
                             <li>
-                                Voto: <span class="gray_txt">{{movie.vote_average}}</span>
+                                Voto:
+                                <span
+                                    v-for="star in movie.vote_average"
+                                    class="yellow_txt">
+                                    <i class="fas fa-star"></i>
+                                </span>
                             </li>
 
                         </ul>
@@ -102,8 +128,8 @@
             </div>
             <!-- fine contenitore risultati -->
 
-            <!-- stampa se l'array dei risultati non ha nessun contenuto -->
-            <div v-else class="no_results">
+            <!-- stampa se l'utente non scrive niente nel filtro -->
+            <div v-if="userFilter.length == 0" class="no_results">
                 Cerca il titolo del film o della serie tv che vuoi guardare
             </div>
             

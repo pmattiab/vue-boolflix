@@ -25,14 +25,18 @@ li {
     color: gray;
 }
 
+.yellow_txt {
+    color: darkgoldenrod;
+}
+
 input {
     outline: none;
 }
 
 /* HEADER */
 header {
-    height: 90px;
-    padding: 17px 100px;
+    height: 100px;
+    padding: 20px 100px;
     background-color: black;
     display: flex;
     justify-content: space-between;
@@ -75,7 +79,7 @@ header .filters input {
 
 /* MAIN */
 main {
-    height: calc(100% - 90px);
+    height: calc(100% - 100px);
     background-color: #222;
 }
 
@@ -91,29 +95,48 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    text-align: center;
     padding: 30px;
 }
 
 .results_list .single_result {
-    width: calc((100% / 5) - 40px);
-    font-size: 12px;
-    height: 170px;
-    margin: 10px;
-    border: 1px solid red;
+    width: 260px;
+    height: 390px;
+    font-size: 13px;
+    margin: 20px 22px;
+    position: relative;
 }
 
 .single_result .lan_flag {
-    width: 23px;
+    width: 22px;
     height: 15px;
 }
 
+.single_result .poster {
+    width: 260px;
+    height: 390px;
+    display: block;
+}
+
 .result_details {
-    height: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    font-weight: 500;
+    width: 260px;
+    height: 390px;
+    padding: 5px;
+    text-align: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+}
+
+.result_details li {
+    margin-bottom: 10px;
+}
+
+.single_result:hover .result_details {
+    opacity: 1;
 }
 
 .no_results {

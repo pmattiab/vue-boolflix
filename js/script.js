@@ -20,8 +20,7 @@ var app = new Vue(
                 // se l'utente non inserisce nulla
                 if (this.userFilter == 0) {
                 
-                    // esce l'alert che lo avvisa
-                    alert("Non hai inserito nessun titolo")
+                    this.movies = [];
                 
                   // altrimenti
                 } else {
@@ -50,8 +49,16 @@ var app = new Vue(
                             // variabile result uguale al valore .data dell'oggetto "response" ottenuto
                             const result = response.data;
 
-                            // e rendo il mio array dei film uguale all'array dei risultati ottenuti dal valore response nell'oggetto result
-                            this.movies = result.results;
+                            result.results.forEach(element => {
+                                element.vote_average = Math.ceil(element.vote_average / 2);
+                            });
+
+                            // tramite filter() ritorno nel mio array movies solo gli oggetti
+                            // come film e serie tv (media type == "movie" o "tv")
+                            this.movies = result.results.filter((element) => {
+                                return element.media_type == "movie" || element.media_type == "tv";
+                            })
+
 
                         })
                 }
