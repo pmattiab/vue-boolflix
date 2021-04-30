@@ -8,6 +8,8 @@ var app = new Vue(
         data: {
             movies: [],
             userFilter: "",
+            apiKey: "5ec9dfa6d5191b1fbf1b3bf213cbe799",
+            lang: "it-IT"
         },
 
         // methods (funzioni)
@@ -25,46 +27,55 @@ var app = new Vue(
                   // altrimenti
                 } else {
 
-                    // chiamata ajax multi per cercare film e serie tv
+                    // chiamata api multi per cercare film e serie tv
                     axios
                         .get("https://api.themoviedb.org/3/search/multi", {
                             
-                            // impostando i parametri
+                            // impostando i parametri, passandoli dalle variabili in data
                             params: {
-
-                                // key necessaria per fare la chiamata
-                                api_key: "5ec9dfa6d5191b1fbf1b3bf213cbe799",
-                                
-                                // query necesseria, che sarà una stringa inseria dall'utente
+                                api_key: this.apiKey,
                                 query: this.userFilter,
-                                
-                                // lingua opzionale
-                                language: "it-IT"
+                                language: this.lang
                             }
                         })
 
                         // quindi ottengo il risultato response che sarà un oggetto
                         .then((response) => {
 
-                            // variabile result uguale al valore .data dell'oggetto "response" ottenuto
-                            const result = response.data;
-
-                            // ciclo forEach su tutti i risultati (oggetti) per dividere in 2
-                            // il numero della valutazione ed arrotondarlo per eccesso
-                            // e per "tagliare" la trama fino a 200 caratteri ed aggiungere "..."
-                            result.results.forEach(element => {
-                                element.vote_average = Math.ceil(element.vote_average / 2);
-                                element.overview = element.overview.slice(0, 200);
-                                if (element.overview.length > 199) {
-                                    element.overview += "...";
-                                }
-                            });
+                            // variabile resultObj uguale al valore .data dell'oggetto "response" ottenuto
+                            const resultObj = response.data;
 
                             // tramite filter() ritorno nel mio array movies solo gli oggetti
                             // come film e serie tv (media type == "movie" o "tv")
-                            this.movies = result.results.filter((element) => {
+                            this.movies = resultObj.results.filter((element) => {
                                 return element.media_type == "movie" || element.media_type == "tv";
                             })
+
+                            // ciclo forEach su tutti i risultati (oggetti)
+                            this.movies.forEach(element => {
+
+                                // per trasformare il voto in numero da 1 a 5 (arrotondando per eccesso)
+                                element.vote_average = Math.ceil(element.vote_average / 2);
+
+                                // per "tagliare" la trama fino a 200 caratteri ed aggiungere "..."
+                                if (element.overview.length > 199) {
+                                    element.overview = element.overview.slice(0, 200) + "...";
+                                }
+
+                                // chiamati api per vedere i singoli dettagli del film o della serie
+                                axios
+                                    .get("https://api.themoviedb.org/3/" + element.media_type + "/" + element.id, {
+                                        params: {
+                                            api_key: this.apiKey,
+                                            language: this.lang
+                                        }
+                                    })
+
+                                    // ottengo per ogni elemento un array, contenente i generi
+                                    .then((response) => {
+                                        console.log(response.data.genres);
+                                    })
+                            });
                         })
                 }
             }
