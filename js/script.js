@@ -9,7 +9,8 @@ var app = new Vue(
             movies: [],
             userFilter: "",
             apiKey: "5ec9dfa6d5191b1fbf1b3bf213cbe799",
-            lang: "it-IT"
+            lang: "it-IT",
+            langList: ["de", "en", "es", "fr", "it", "ja", "ko", "nl", "pt"]
         },
 
         // methods (funzioni)
@@ -51,6 +52,8 @@ var app = new Vue(
                                 return element.media_type == "movie" || element.media_type == "tv";
                             })
 
+                            this.addGenresActors(this.movies);
+
                             // ciclo forEach su tutti i risultati (oggetti)
                             this.movies.forEach(element => {
 
@@ -61,23 +64,37 @@ var app = new Vue(
                                 if (element.overview.length > 199) {
                                     element.overview = element.overview.slice(0, 200) + "...";
                                 }
-
-                                // chiamati api per vedere i singoli dettagli del film o della serie
-                                axios
-                                    .get("https://api.themoviedb.org/3/" + element.media_type + "/" + element.id, {
-                                        params: {
-                                            api_key: this.apiKey,
-                                            language: this.lang
-                                        }
-                                    })
-
-                                    // ottengo per ogni elemento un array, contenente i generi
-                                    .then((response) => {
-                                        console.log(response.data.genres);
-                                    })
                             });
+
+                            console.log(this.movies);
                         })
                 }
+            },
+
+            addGenresActors(movieArray) {
+
+                movieArray.forEach(movie => {
+
+                    // chiamata api per vedere i singoli dettagli del film o della serie
+                    axios
+                    .get("https://api.themoviedb.org/3/" + movie.media_type + "/" + movie.id, {
+                        params: {
+                            api_key: this.apiKey,
+                            language: this.lang,
+                            append_to_response: "credits"
+                        }
+                    })
+
+                    // ottengo per ogni elemento un array, contenente i generi e gli attori
+                    .then((response) => {
+                        movie.genres = response.data.genres;
+                        movie.actors = response.data.credits.cast;
+                    });
+
+                })
+
+                return movieArray;
+
             }
         },
 

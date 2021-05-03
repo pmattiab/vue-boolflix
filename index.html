@@ -63,12 +63,14 @@
                         <img
                             v-if="movie.poster_path"
                             class="poster"
-                            :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" alt="movie.name">
+                            :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" alt="movie.name"
+                        >
                             
                         <img
                             v-else
                             class="poster"
-                            src="img/no_poster.jpg" alt="no image">
+                            src="img/no_poster.jpg" alt="no image"
+                        >
 
                         <!-- inizio lista dettagli singolo risulatato -->
                         <!-- ogni dettagli sarà una li -->
@@ -92,17 +94,20 @@
                             <li>
                                 <span class="bold">Lingua: </span>
                                 <img
-                                    v-if="movie.original_language"
+                                    v-if="langList.includes(movie.original_language)"
                                     class="lan_flag"
                                     :src="'img/' + movie.original_language + '.png'"
-                                    alt="movie.original_language">
-                                <span v-else>non disponibile</span>
+                                    alt="movie.original_language"
+                                >
+                                <span v-else class="gray_txt">{{movie.original_language}}</span>
                             </li>
 
                             <!-- cast film o serie tv -->
                             <li>
                                 <span class="bold">Cast: </span>
-                                <span class="gray_txt">esempio 1, esempio 2</span>
+                                <span v-for="actor in movie.actors">
+                                    test
+                                </span>
                             </li>
 
                             <!-- trama film o serie tv -->
@@ -115,7 +120,11 @@
                             <!-- generi film o serie tv -->
                             <li>
                                 <span class="bold">Genere: </span>
-                                <span class="gray_txt">esempio 1, esempio 2</span>
+                                <span
+                                    v-for="genre in movie.genres"
+                                    class="gray_txt">
+                                    {{genre.name}}
+                                </span>
                             </li>
                             
                             <!-- voto film o serie tv -->
