@@ -52,6 +52,8 @@ var app = new Vue(
                                 return element.media_type == "movie" || element.media_type == "tv";
                             })
 
+                            // richiamo la funzione per aggiungere agli elementi dell'array movie
+                            // i generi e gli attori
                             this.addGenresActors(this.movies);
 
                             // ciclo forEach su tutti i risultati (oggetti)
@@ -71,6 +73,8 @@ var app = new Vue(
                 }
             },
 
+            // funzione per aggiungere agli elementi dell'array movies
+            // i generi e gli attori
             addGenresActors(movieArray) {
 
                 movieArray.forEach(movie => {
