@@ -96,7 +96,7 @@
                                 <img
                                     v-if="langList.includes(movie.original_language)"
                                     class="lan_flag"
-                                    :src="'img/' + movie.original_language + '.png'"
+                                    :src="'img/flags/' + movie.original_language + '.png'"
                                     alt="movie.original_language"
                                 >
                                 <span v-else class="gray_txt">{{movie.original_language}}</span>
@@ -151,6 +151,9 @@
 
                 </ul>
                 <!-- fine lista risultati -->
+
+                <!-- messaggio nessun risultato trovato -->
+                <span v-if="noResult" class="no_result bold gray_txt">Nessun risultano corrispondente</span>
 
             </div>
             <!-- fine contenitore risultati -->

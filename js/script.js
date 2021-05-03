@@ -10,7 +10,8 @@ var app = new Vue(
             userFilter: "",
             apiKey: "5ec9dfa6d5191b1fbf1b3bf213cbe799",
             lang: "it-IT",
-            langList: ["de", "en", "es", "fr", "it", "ja", "ko", "nl", "pt"]
+            langList: ["de", "en", "es", "fr", "it", "ja", "ko", "pt"],
+            noResult: false
         },
 
         // methods (funzioni)
@@ -28,6 +29,8 @@ var app = new Vue(
                   // altrimenti
                 } else {
 
+                    this.movies = [];
+
                     // chiamata api multi per cercare film e serie tv
                     axios
                         .get("https://api.themoviedb.org/3/search/multi", {
@@ -44,57 +47,75 @@ var app = new Vue(
                         .then((response) => {
 
                             // variabile resultObj uguale al valore .data dell'oggetto "response" ottenuto
-                            const resultObj = response.data;
+                            let resultObj = response.data;
 
-                            // tramite filter() ritorno nel mio array movies solo gli oggetti
-                            // come film e serie tv (media type == "movie" o "tv")
-                            this.movies = resultObj.results.filter((element) => {
-                                return element.media_type == "movie" || element.media_type == "tv";
-                            })
+                            // se è stato trovato almeno 1 risultato
+                            if (resultObj.results.length > 0) {
 
-                            // richiamo la funzione per aggiungere agli elementi
-                            // dell'array movie i generi e gli attori
-                            this.addGenresActors(resultObj.results);
+                                // richiamo la funzione per ottenere dettagli
+                                // sugli oggetti dell'array ottenuto dalla ricerca 
+                                this.getMoviesDetails(resultObj.results);
 
-                            // ciclo forEach su tutti i risultati (oggetti)
-                            this.movies.forEach(element => {
+                              // altrimenti
+                            } else {
 
-                                // per trasformare il voto in numero da 1 a 5 (arrotondando per eccesso)
-                                element.vote_average = Math.ceil(element.vote_average / 2);
-
-                                // per "tagliare" la trama fino a 200 caratteri ed aggiungere "..."
-                                if (element.overview.length > 199) {
-                                    element.overview = element.overview.slice(0, 200) + "...";
-                                }
-                            });
-
+                                // "Nessun risultato" diventa true
+                                this.noResult = true;
+                            }
                         })
                 }
             },
 
-            // funzione per aggiungere agli elementi dell'array movies
-            // i generi e gli attori
-            addGenresActors(movieArray) {
+            // funzione per ottenere i dettagli sugli oggetti dell'array
+            getMoviesDetails(movieArray) {
 
-                movieArray.forEach(movie => {
+                // tramite filter() ritorno nel mio movieArray solo gli oggetti
+                // come film e serie tv (media type == "movie" o "tv")
+                movieArray.filter((element) => {
+                    return element.media_type == "movie" || element.media_type == "tv";
+                })
 
-                    // chiamata api per vedere i singoli dettagli del film o della serie
+                // se l'array dopo il filtro ha almeno 1 risultato
+                if (movieArray.length > 0) {
+
+                    // ciclo forEach sugli elementi dell'array
+                    movieArray.forEach(element => {
+
+                    // trasformo il voto in numero da 1 a 5 (arrotondando per eccesso)
+                    element.vote_average = Math.ceil(element.vote_average / 2);
+
+                    // "taglio" la trama fino a 250 caratteri ed aggiungo "..."
+                    if (element.overview.length >= 251) {
+                        element.overview = element.overview.slice(0, 250) + "...";
+                    }
+
                     axios
-                    .get("https://api.themoviedb.org/3/" + movie.media_type + "/" + movie.id, {
-                        params: {
-                            api_key: this.apiKey,
-                            language: this.lang,
-                            append_to_response: "credits"
-                        }
+                        // chiamo l'api con i parametri per vedere i singoli dettagli del film o della serie
+                        .get("https://api.themoviedb.org/3/" + element.media_type + "/" + element.id, {
+                            params: {
+                                api_key: this.apiKey,
+                                language: this.lang,
+                                append_to_response: "credits"
+                            }
+                        })
+
+                        // poi...
+                        .then((response) => {
+                            // aggiungo agli oggetti cliclati sia i generi che il cast
+                            element.genres = response.data.genres;
+                            element.actors = response.data.credits.cast.splice(0, 5);
+                            
+                            // infine pusho l'oggetto completo nell'array movie da visualizzare in HTML
+                            this.movies.push(element);
+                        });
                     })
 
-                    // ottengo per ogni elemento un array, contenente i generi e gli attori
-                    .then((response) => {
-                        movie.genres = response.data.genres;
-                        movie.actors = response.data.credits.cast;
-                        this.movies = movieArray;
-                    });
-                });
+                  // altrimenti
+                } else {
+
+                    // "Nessun risultato" diventa true
+                    this.noResult = true;
+                }
             }
         },
 
