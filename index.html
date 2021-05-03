@@ -27,8 +27,21 @@
             <!-- filtro ricerca film/serie -->
             <div class="filters">
 
+                <span class="genre_filter gray_txt" v-if="genresList.length > 0">
+                    <label for="genre_filter">Filtra per genere:</label>
+                    <select class="select_genre gray_txt" id="genre_filter" v-model="genreActive">
+                        <option value=""><span>All</span></option>
+                        <option
+                            v-for="genre in genresList"
+                            :value="genre">
+                            {{genre.name}}
+                        </option>
+                    </select>
+                </span>
+
                 <!-- tasto per cercare -->
                 <button
+                    class="gray_txt"
                     @click="searchTitle()">
                     Cerca
                 </button>
@@ -38,7 +51,8 @@
                     type="text"
                     v-model="userFilter"
                     @keyup.enter="searchTitle()"
-                    placeholder="Inserisci titolo">
+                    placeholder="Inserisci titolo"
+                >
             </div>
 
         </header>
@@ -57,6 +71,7 @@
                     <!-- inizio li singolo risultato -->
                     <li
                         v-for="movie in movies"
+                        v-if="movie.genre_ids.includes(genreActive.id) || genreActive == ''"
                         class="single_result">
 
                         <!-- copertina film o serie tv -->
@@ -64,8 +79,7 @@
                             v-if="movie.poster_path"
                             class="poster"
                             :src="'https://image.tmdb.org/t/p/w300' + movie.poster_path" alt="movie.name"
-                        >
-                            
+                        >   
                         <img
                             v-else
                             class="poster"
@@ -73,7 +87,7 @@
                         >
 
                         <!-- inizio lista dettagli singolo risulatato -->
-                        <!-- ogni dettagli sarà una li -->
+                        <!-- ogni dettaglio sarà una li -->
                         <ul class="result_details">
 
                             <!-- titolo film o serie tv -->
@@ -112,7 +126,7 @@
                                 </span>
                                 <span
                                     v-if="movie.actors.length == 0"
-                                    v-else class="italic gray_txt">
+                                    class="italic gray_txt">
                                     non disponibile
                                 </span>
                             </li>

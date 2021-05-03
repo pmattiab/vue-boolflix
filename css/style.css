@@ -37,7 +37,7 @@ li {
     font-style: italic;
 }
 
-input {
+input, select {
     outline: none;
 }
 
@@ -59,7 +59,6 @@ header img {
 header .filters button {
     font-size: 17px;
     padding: 10px 20px;
-    color: gray;
     border: 1px solid gray;
     border-radius: 10px;
     background-color: black;
@@ -83,6 +82,22 @@ header .filters input {
     background-color: black;
     font-size: 17px;
     color: white;
+}
+
+header .genre_filter {
+    font-size: 17px;
+}
+
+header .select_genre {
+    width: 180px;
+    height: 35px;
+    font-size: 17px;
+    background-color: black;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid gray;
+    margin: 0 30px 0 5px;
 }
 
 /* MAIN */
@@ -112,6 +127,7 @@ main {
     height: 390px;
     font-size: 13px;
     margin: 15px 10px;
+    cursor: pointer;
     position: relative;
 }
 

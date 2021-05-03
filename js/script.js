@@ -11,6 +11,8 @@ var app = new Vue(
             apiKey: "5ec9dfa6d5191b1fbf1b3bf213cbe799",
             lang: "it-IT",
             langList: ["de", "en", "es", "fr", "it", "ja", "ko", "pt"],
+            genresList: [],
+            genreActive: "",
             noResult: false
         },
 
@@ -49,7 +51,7 @@ var app = new Vue(
                         .then((response) => {
 
                             // variabile resultObj uguale al valore .data dell'oggetto "response" ottenuto
-                            let resultObj = response.data;
+                            const resultObj = response.data;
 
                             // se è stato trovato almeno 1 risultato
                             if (resultObj.results.length > 0) {
@@ -103,13 +105,21 @@ var app = new Vue(
 
                         // poi...
                         .then((response) => {
-                            
+
                             // aggiungo agli oggetti cliclati sia i generi che il cast
                             element.genres = response.data.genres;
                             element.actors = response.data.credits.cast.splice(0, 5);
+
+                            // ciclo forEach sui generi (oggetti) dell'elemento
+                            element.genres.forEach(element => {
+
+                                // per pusharli come oggetto dentro l'array dei generi per la select
+                                this.genresList.push(element);
+                            })
                             
                             // infine pusho l'oggetto completo nell'array movie da visualizzare in HTML
                             this.movies.push(element);
+
                         });
                     })
 
@@ -131,3 +141,27 @@ var app = new Vue(
         mounted() {}
     }
 );
+
+// ---------------------------------------------------------------------------
+// -------------------------- DA METTERE IN MOUNTED --------------------------
+//
+// per ricavare tutti i generi presenti su themoviedb
+// per fare poi la select con le option abilitate e disabilitate
+//
+            // axios
+            //     .get("https://api.themoviedb.org/3/genre/movie/list", {
+                    
+            //         // impostando i parametri, passandoli dalle variabili in data
+            //         params: {
+            //             api_key: this.apiKey,
+            //             language: this.lang
+            //         }
+            //     })
+
+            //     // quindi ottengo il risultato response che sarà un oggetto
+            //     .then((response) => {
+
+            //         // variabile resultObj uguale al valore .data dell'oggetto "response" ottenuto
+            //         const resultObj = response.data;
+            //         this.genresList = resultObj.genres;
+            //     })
