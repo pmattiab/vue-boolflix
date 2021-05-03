@@ -105,16 +105,27 @@
                             <!-- cast film o serie tv -->
                             <li>
                                 <span class="bold">Cast: </span>
-                                <span v-for="actor in movie.actors" class="gray_txt">
+                                <span
+                                    v-for="actor in movie.actors"
+                                    class="gray_txt">
                                     {{actor.name}}
+                                </span>
+                                <span
+                                    v-if="movie.actors.length == 0"
+                                    v-else class="italic gray_txt">
+                                    non disponibile
                                 </span>
                             </li>
 
                             <!-- trama film o serie tv -->
                             <li>
                                 <span class="bold">Trama: </span>
-                                <span v-if="movie.overview" class="gray_txt">{{movie.overview}}</span>
-                                <span v-else class="gray_txt">non disponibile</span>
+                                <span
+                                    v-if="movie.overview"
+                                    class="gray_txt">
+                                    {{movie.overview}}
+                                </span>
+                                <span v-else class="italic gray_txt">non disponibile</span>
                             </li>
 
                             <!-- generi film o serie tv -->
@@ -124,6 +135,11 @@
                                     v-for="genre in movie.genres"
                                     class="gray_txt">
                                     {{genre.name}}
+                                </span>
+                                <span
+                                    v-if="movie.genres.length == 0"
+                                    class="italic gray_txt">
+                                    non disponibile
                                 </span>
                             </li>
                             
@@ -140,7 +156,7 @@
                                         class="fas fa-star gray_txt">
                                     </i>
                                 </span>
-                                <span v-else class="gray_txt">non disponibile</span>
+                                <span v-else class="italic gray_txt">non disponibile</span>
                             </li>
 
                         </ul>

@@ -24,11 +24,13 @@ var app = new Vue(
                 // se l'utente non inserisce nulla
                 if (this.userFilter == 0) {
                 
+                    // azzero l'array degli oggetti movie da visualizzare
                     this.movies = [];
                 
                   // altrimenti
                 } else {
 
+                    // azzero l'array degli oggetti movie da visualizzare
                     this.movies = [];
 
                     // chiamata api multi per cercare film e serie tv
@@ -71,7 +73,7 @@ var app = new Vue(
 
                 // tramite filter() ritorno nel mio movieArray solo gli oggetti
                 // come film e serie tv (media type == "movie" o "tv")
-                movieArray.filter((element) => {
+                movieArray = movieArray.filter((element) => {
                     return element.media_type == "movie" || element.media_type == "tv";
                 })
 
@@ -101,6 +103,7 @@ var app = new Vue(
 
                         // poi...
                         .then((response) => {
+                            
                             // aggiungo agli oggetti cliclati sia i generi che il cast
                             element.genres = response.data.genres;
                             element.actors = response.data.credits.cast.splice(0, 5);
