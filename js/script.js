@@ -52,9 +52,9 @@ var app = new Vue(
                                 return element.media_type == "movie" || element.media_type == "tv";
                             })
 
-                            // richiamo la funzione per aggiungere agli elementi dell'array movie
-                            // i generi e gli attori
-                            this.addGenresActors(this.movies);
+                            // richiamo la funzione per aggiungere agli elementi
+                            // dell'array movie i generi e gli attori
+                            this.addGenresActors(resultObj.results);
 
                             // ciclo forEach su tutti i risultati (oggetti)
                             this.movies.forEach(element => {
@@ -68,7 +68,6 @@ var app = new Vue(
                                 }
                             });
 
-                            console.log(this.movies);
                         })
                 }
             },
@@ -93,12 +92,9 @@ var app = new Vue(
                     .then((response) => {
                         movie.genres = response.data.genres;
                         movie.actors = response.data.credits.cast;
+                        this.movies = movieArray;
                     });
-
-                })
-
-                return movieArray;
-
+                });
             }
         },
 
